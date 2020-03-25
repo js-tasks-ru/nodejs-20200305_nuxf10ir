@@ -1,6 +1,7 @@
 const url = require('url');
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
 
 const server = new http.Server();
 
@@ -11,6 +12,23 @@ server.on('request', (req, res) => {
 
   switch (req.method) {
     case 'GET':
+      fs.createReadStream(filepath)
+          .on('error', (error) => {
+            if (error.code === 'ENOENT') {
+              const {dir} = path.parse(pathname);
+              if (!!dir) {
+                res.statusCode = 400;
+                res.end('Is Folder');
+              } else {
+                res.statusCode = 404;
+                res.end('Not exists');
+              }
+            } else {
+              res.statusCode = 500;
+              res.end('Server error');
+            }
+          })
+          .pipe(res);
 
       break;
 
