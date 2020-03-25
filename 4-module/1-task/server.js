@@ -14,7 +14,6 @@ server.on('request', (req, res) => {
     case 'GET':
       fs.createReadStream(filepath)
           .on('error', (error) => {
-            console.log(error.code);
             if (error.code === 'ENOENT') {
               const {dir} = path.parse(pathname);
               if (!!dir) {
@@ -25,7 +24,6 @@ server.on('request', (req, res) => {
                 res.end('Not exists');
               }
             } else {
-              console.log(err);
               res.statusCode = 500;
               res.end('Server error');
             }

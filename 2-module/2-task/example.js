@@ -8,7 +8,7 @@ const lines = new LineSplitStream({
 });
 
 function onData(line) {
-  console.log(++iterator + ' ' + line);
+  console.log(line);
 }
 
 lines.on('data', onData);
